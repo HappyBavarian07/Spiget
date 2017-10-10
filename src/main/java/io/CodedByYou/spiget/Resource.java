@@ -29,6 +29,7 @@ public class Resource {
     private int likes;
     private String downloadLink;
     private String resourceLink;
+    private String resourceIconLink;
     private Rating rating;
     private List<String> links;
     private List<String> testedVersions;
@@ -37,12 +38,14 @@ public class Resource {
         resoure = get("");
         resourceid = resoure.getInt("id");
         resoure = U.getResource(null,resourceid);
+        System.out.println(resoure);
         this.resourcename = resoure.getString("name");
         permium = resoure.getBoolean("premium");
         price = resoure.getInt("price");
         releaseDate = resoure.getInt("releaseDate");
         downloads = resoure.getInt("downloads");
         likes = resoure.getInt("likes");
+        resourceIconLink = "https://www.spigotmc.org/" + resoure.getJSONObject("icon").getString("url");
         links = new ArrayList<>();
         JSONObject object = resoure.getJSONObject("links");
         String o = object.toString();
@@ -69,8 +72,9 @@ public class Resource {
     public Resource(int resourceid) throws Exception {
         this.resourceid = resourceid;
         resoure = U.getResource(null,resourceid);
+        System.out.println(resourceid);
         this.resourcename = resoure.getString("name");
-        permium = resoure.getBoolean("premium");
+        permium = (Boolean) resoure.get("premium");
         price = resoure.getInt("price");
         releaseDate = resoure.getInt("releaseDate");
         downloads = resoure.getInt("downloads");
@@ -121,6 +125,10 @@ public class Resource {
         res = res.replaceFirst( "\\[","");
         res = res.replaceFirst( "\\]","");
         return new JSONObject(res);
+    }
+
+    public String getResourceIconLink() {
+        return resourceIconLink;
     }
 
     public String getTag(){
