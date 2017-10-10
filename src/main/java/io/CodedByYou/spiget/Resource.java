@@ -72,7 +72,6 @@ public class Resource {
     public Resource(int resourceid) throws Exception {
         this.resourceid = resourceid;
         resoure = U.getResource(null,resourceid);
-        System.out.println(resourceid);
         this.resourcename = resoure.getString("name");
         permium = (Boolean) resoure.get("premium");
         price = resoure.getInt("price");
@@ -126,11 +125,9 @@ public class Resource {
         res = res.replaceFirst( "\\]","");
         return new JSONObject(res);
     }
-
     public String getResourceIconLink() {
         return resourceIconLink;
     }
-
     public String getTag(){
         String i;
         try {
