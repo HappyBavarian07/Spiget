@@ -20,14 +20,14 @@ public class Author {
         Name = xAuthor.getString("name");
         id = xAuthor.getInt("id");
         JSONObject form_data = xAuthor.getJSONObject("icon");
-        icon = form_data.getString("url");
+        icon = "https://spigotmc.org/" + form_data.getString("url");
     }
     private Author (int id) throws Exception{
         xAuthor = U.getAuthor(id);
         Name = xAuthor.getString("name");
         id = xAuthor.getInt("id");
         JSONObject form_data = xAuthor.getJSONObject("icon");
-        icon = form_data.getString("url");
+        icon = "https://spigotmc.org/" + form_data.getString("url");
     }
 
     public static Author getByName(String name)throws Exception{
