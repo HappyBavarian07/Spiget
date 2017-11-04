@@ -1,6 +1,9 @@
 package io.CodedByYou.spiget;
 
+import com.sun.org.apache.regexp.internal.RE;
 import io.CodedByYou.spiget.cUtils.U;
+import org.htmlcleaner.HtmlCleaner;
+import org.htmlcleaner.TagNode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,6 +13,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 /**
@@ -33,12 +37,12 @@ public class Resource {
     private Rating rating;
     private List<String> links;
     private List<String> testedVersions;
+    private String description,descriptionAsXml;
     public Resource(String resourcename) throws Exception {
         this.resourcename = resourcename;
         resoure = get("");
         resourceid = resoure.getInt("id");
         resoure = U.getResource(null,resourceid);
-        System.out.println(resoure);
         this.resourcename = resoure.getString("name");
         permium = resoure.getBoolean("premium");
         price = resoure.getInt("price");
@@ -46,6 +50,11 @@ public class Resource {
         downloads = resoure.getInt("downloads");
         likes = resoure.getInt("likes");
         resourceIconLink = "https://www.spigotmc.org/" + resoure.getJSONObject("icon").getString("url");
+        descriptionAsXml = resoure.getString("description");
+        descriptionAsXml = new String(Base64.getDecoder().decode(descriptionAsXml));
+        description = descriptionAsXml;
+        description=description.replaceAll("<.*?>", "");
+        description = description.replaceAll("(?m)^[ \t]*\r?\n", "");
         links = new ArrayList<>();
         JSONObject object = resoure.getJSONObject("links");
         String o = object.toString();
@@ -77,6 +86,11 @@ public class Resource {
         price = resoure.getInt("price");
         releaseDate = resoure.getInt("releaseDate");
         downloads = resoure.getInt("downloads");
+        descriptionAsXml = resoure.getString("description");
+        descriptionAsXml = new String(Base64.getDecoder().decode(descriptionAsXml));
+        description = descriptionAsXml;
+        description=description.replaceAll("<.*?>", "");
+        description = description.replaceAll("(?m)^[ \t]*\r?\n", "");
         likes = resoure.getInt("likes");
         links = new ArrayList<>();
         JSONObject object = resoure.getJSONObject("links");
@@ -138,6 +152,15 @@ public class Resource {
         }
         return "";
     }
+
+    public static void main(String[] args) throws Exception {
+        Resource r = new Resource("dlinker");
+        System.out.print(r.getDescription());
+    }
+    public String getDescription() {
+        return description;
+    }
+
     public String getResourceName(){
         return resourcename;
     }
